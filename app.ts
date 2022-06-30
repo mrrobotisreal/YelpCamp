@@ -1,3 +1,4 @@
+// @ts-nocheck
 const express = require('express');
 const path = require('path');
 const Mongoose = require('mongoose');
@@ -23,10 +24,13 @@ app.get('/', (req, res) => {
   res.render('home');
 });
 
-app.get('/make_campground', async (req, res) => {
-  const camp = new Campground({title: 'My Backyard', description: 'an awesome place with gardens and chickens!'});
-  await camp.save();
-  res.send(camp);
+app.get('/campgrounds', async (req, res) => {
+  const campgrounds = await Campground.find({});
+  res.render('campgrounds/index', {campgrounds: campgrounds});
+});
+
+app.get('/campgrounds/:id', async (req, res) => {
+  res.render('campgrounds/show');
 });
 
 app.listen(33333, () => {
